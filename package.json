@@ -1,6 +1,6 @@
 {
   "name": "custom-table",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a custom table component for vue.",
   "main": "dist/custom-table.js",
   "author": "ciwyaitd",
@@ -10,6 +10,26 @@
     "demo": "webpack-dev-server --config webpack.demo.conf.js --open --hot --mode development",
     "build:demo": "webpack --config webpack.demo.conf.js --mode production"
   },
+  "files": [
+    "dist/custom-column.js",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:ciwyaitd/custom-table.git"
+  },
+  "keywords": [
+    "element",
+    "element-ui",
+    "element-table",
+    "custom-table",
+    "vue",
+    "vue table"
+  ],
+  "bugs": {
+    "url": "https://github.com/ciwyaitd/custom-table/issues"
+  },
+  "homepage": "https://ciwyaitd.github.io/custom-table/",
   "engines": {
     "node": ">= 6.11.5",
     "npm": ">= 3.0.0"
