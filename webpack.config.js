@@ -3,7 +3,7 @@ let path = require('path')
 let version = require('./package.json').version
 let banner =
   "/**\n" +
-  " * element-table-column v" + version + "\n" +
+  " * custom-table v" + version + "\n" +
   " * https://github.com/ciwyaitd/element-table-column\n" +
   " * MIT License\n" +
   " */\n";
@@ -40,5 +40,13 @@ module.exports = {
             banner,
             raw: true
         })
-    ]
+    ],
+    externals: {
+        vue: {
+            root: 'Vue',
+            commonjs: 'vue',
+            commonjs2: 'vue',
+            amd: 'vue'
+        }
+    }
 }

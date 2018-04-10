@@ -2,6 +2,8 @@ let merge = require('webpack-merge')
 let config = require('./webpack.config')
 let path = require('path')
 
+config.externals = null
+delete config.externals
 module.exports = merge(config, {
     entry: {
         'demo': './demo/src/index.js'
@@ -31,5 +33,5 @@ module.exports = merge(config, {
     devServer: {
         historyApiFallback: true,
     },
-    // devtool: '#eval-source-map'
+    devtool: '#eval-source-map',
 })
