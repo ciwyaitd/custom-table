@@ -1,0 +1,41 @@
+{
+  "name": "custom-table",
+  "version": "0.0.1",
+  "description": "a custom table component for vue.",
+  "main": "dist/custom-table.js",
+  "author": "ciwyaitd",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --progress --hide-modules --mode production",
+    "demo": "webpack-dev-server --config webpack.demo.conf.js --open --hot --mode development",
+    "build:demo": "webpack --config webpack.demo.conf.js --mode production"
+  },
+  "engines": {
+    "node": ">= 6.11.5",
+    "npm": ">= 3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "element-table": "^2.2.2",
+    "element-table-column": "^0.0.5",
+    "element-theme-chalk": "^2.3.3",
+    "highlight.js": "^9.12.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.20.3",
+    "vue": "^2.5.16",
+    "vue-loader": "^14.2.2",
+    "vue-style-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1",
+    "webpack-merge": "^4.1.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5"
+  }
+}
