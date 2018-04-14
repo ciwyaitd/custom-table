@@ -1,5 +1,6 @@
 <template>
     <el-table
+        class="last-table"
         :data="data"
         :show-header="false"
         :border="border"
@@ -93,6 +94,10 @@
                     }
                 }
             },
+            store: Object,
+            parentId: String,
+            level: Number,
+
             height: [String, Number],
             stripe: Boolean,
             border: Boolean,
@@ -132,19 +137,46 @@
                 }
                 return this.width
             },
-        }
+        },
+        computed: {
+            tLevel() {
+                return 'last-table-' + this.level
+            }
+        },
+
+        mounted() {
+            this.store.tStore = {
+                id: this.parentId,
+                level: this.tLevel,
+                store: this.$children[0].store,
+            }
+            this.$children[0].store = this.store.tStore(this.parentId, this.tLevel)
+        },
+        updated() {
+            this.store.tStore = {
+                id: this.parentId,
+                level: this.tLevel,
+            }
+            this.$nextTick(() => {
+                this.store.tStore = {
+                    id: this.parentId,
+                    level: this.tLevel,
+                    store: this.$children[0].store
+                }
+                this.$children[0].store = this.store.tStore(this.parentId, this.tLevel)
+            })
+        },
     }
 </script>
 
 <style scoped>
-    .el-table__expand-icon {
+    .last-table >>> .el-table__expand-icon {
         display: none;
     }
 
-    td:first-child .cell {
+    .last-table >>> td:first-child .cell {
         position: relative;
         z-index: 1;
         white-space: nowrap;
-        margin-right: -48px;
     }
 </style>

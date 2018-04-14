@@ -1,7 +1,8 @@
 <template>
     <custom-table-with-slot
         :props="props"
-        :data="data">
+        :data="data"
+        border>
 
         <template
             slot="姓名"
@@ -41,20 +42,25 @@
                     label: '日期',
                     width: 140,
                     prop: 'date',
+                    headerAlign: 'center'
                 }, {
                     label: '姓名',
                     prop: 'name',
-                    showSlot: true
+                    showSlot: true,
+                    headerAlign: 'center'
                 }, {
                     label: '地址',
-                    showSlot: true
+                    showSlot: true,
+                    headerAlign: 'center'
                 }, {
                     label: '商品',
-                    showSlot: true
+                    showSlot: true,
+                    headerAlign: 'center'
                 }, {
                     label: '其他',
                     width: 130,
-                    showSlot: true
+                    showSlot: true,
+                    headerAlign: 'center'
                 }],
                 data: [
                     {

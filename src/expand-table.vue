@@ -94,6 +94,7 @@
                     :parentId="_id"
                     :left="left"
                     :key="_id"
+                    :level="level + 1"
                 ></expand-table>
 
                 <last-table
@@ -101,6 +102,9 @@
                     :data="s.row[propsKey.children]"
                     :props="props"
                     :left="left"
+                    :level="level + 1"
+                    :parentId="_id"
+                    :store="store"
                 ></last-table>
             </template>
 
@@ -119,6 +123,7 @@
 
 <script>
     import { ElTable } from 'element-table'
+    import { addClass, removeClass, hasClass } from './utils.js'
     import CustomTableColumn from 'custom-table-column.vue'
     import TableColumn from 'element-table-column'
     import LastTable from './last-table.vue'
@@ -170,6 +175,10 @@
                 type: Number,
                 default: 80
             },
+            level: {
+                type: Number,
+                default: 0
+            },
 
             height: [String, Number],
             stripe: Boolean,
@@ -197,16 +206,18 @@
             tooltipEffect: String,
             defaultExpandAll: Boolean,
         },
+
         data() {
             return {
                 reRendering: false,
                 _id: '',
+                store: null
             }
         },
 
         computed: {
             expandRowKeys() {
-                return store.rowKeys(this._id)
+                return this.store.rowKeys(this._id)
             },
             key() {
                 return this.rowKey || (this.props[0] && this.props[0].prop)
@@ -217,15 +228,13 @@
                     'expand-change': (row, expandedRows) => {
                         let key = String(row[this.key])
                         let expanded = this.expandRowKeys.indexOf( key ) === -1
-                        // if (expanded) {
-                        //     store.commit('addRowKeys', this._id, key)
-                        //     return
-                        // }
-                        // this.removeRowKeys(this._id, key)
+                        if (expanded) {
+                            this.store.addRowKeys(this._id, key)
+                        } else {
+                            this.store.removeRowKeys(this._id, key)
+                        }
+                        this.$emit('expand-change', row, expandedRows)
                     },
-                    'row-click': () => {
-                        console.log(123)
-                    }
                 }
             }
         },
@@ -247,12 +256,6 @@
         },
 
         methods: {
-            expand() {
-                console.log('expand')
-            },
-            rowClick() {
-                console.log('click')
-            },
             isShowSlot(column, idx) {
                 if (Boolean(column.showSlot)) {
                     return true
@@ -271,20 +274,6 @@
                     this.setRowKeys(this._id, this.expandKeys)
                 }
             },
-            bindEvent(id, $el) {
-                // this.$nextTick(() => {
-                //     let trEls = ($el || this.$el).querySelectorAll('tbody > tr.el-table__row')
-                //     ; [].forEach.call(trEls, el => {
-                //         el.addEventListener('mouseenter', (e) => {
-
-                //         })
-                //     })
-                // })
-            },
-            register(id) {
-                if (!id) return
-                tableEls[id] = this.$el
-            },
             className(column, idx) {
                 let clsName = ''
                 if (Number(idx) === this.left - 1) {
@@ -302,13 +291,34 @@
             },
         },
 
+        created() {
+            this.store = store
+        },
         mounted() {
-            if (!this.props[0] || !this.props[0].fixed) return
-
+            if (this.isChild) {
+                this.store.tStore = {
+                    id: this._id,
+                    level: this.level,
+                    store: this.$children[0].store,
+                }
+                this.$children[0].store = this.store.tStore(this._id, this.level)
+            }
         },
         updated() {
-            if (this.isChild) return
-            this.register(this._id)
+            if (this.isChild) {
+                this.store.tStore = {
+                    id: this._id,
+                    level: this.level,
+                }
+                this.$nextTick(() => {
+                    this.store.tStore = {
+                        id: this._id,
+                        level: this.level,
+                        store: this.$children[0].store
+                    }
+                    this.$children[0].store = this.store.tStore(this._id, this.level)
+                })
+            }
         },
         beforeMount() {
             if (this.isChild) {
@@ -317,20 +327,14 @@
             }
             this._id = 'expand-table-' + _id++
         },
-        destroyed() {
-            tableEls[this._id] = null
-            delete tableEls[this._id]
+        beforeDestroy() {
+            if (this.isChild) return
+            this.store.delRowKeys(this._id)
         },
 
         install(Vue, options = {}) {
             Vue.component(options.name || this.name, this)
         }
-    }
-
-    let tableEls = {}
-    const handleHover = (id, el) => {
-        let trEls = tableEls[id].querySelectorAll('tr.el-table__row')
-
     }
 </script>
 
@@ -351,6 +355,7 @@
     .el-table--border,
     .el-table--border >>> .el-table--border {
         border-left: none;
+        border-right: 1px solid #ebeef5;
     }
 
     .el-table--border >>> td,
@@ -376,12 +381,20 @@
         height: 10px;
         border-style: solid;
         border-width: 0 0 1px 1px;
-        border-color: #ebeef5;
+        border-color: #909399;
         box-sizing: border-box;
         transform: rotate(-45deg);
     }
 
     .expand-table >>> .el-table__expand-icon--expanded .el-icon-arrow-right {
         transform: rotate(45deg);
+    }
+
+    .expand-table >>> .expand-hover-row > td {
+        background-color: #ecf5ff;
+    }
+
+    .expand-table >>> .empty-child-row .el-table__expand-icon {
+        display: none;
     }
 </style>

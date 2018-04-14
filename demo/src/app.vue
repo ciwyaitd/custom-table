@@ -13,15 +13,6 @@
             <demo-custom-table></demo-custom-table>
             <demo-block ref="demo-custom-table" name="demo-custom-table"></demo-block>
 
-            <!-- <h3 class="sub-tit">
-                <span>expand-table:</span>
-                <small>
-                    <a @click="$refs['demo-expand-table'].open()">usage</a>
-                </small>
-            </h3>
-            <demo-expand-table></demo-expand-table>
-            <demo-block ref="demo-custom-table" name="demo-custom-table"></demo-block> -->
-
             <h3 class="sub-tit">
                 <span>custom-table-with-slot:</span>
                 <small>
@@ -31,6 +22,14 @@
             <demo-custom-table-with-slot></demo-custom-table-with-slot>
             <demo-block ref="demo-custom-table-with-slot" name="demo-custom-table-with-slot"></demo-block>
 
+            <h3 class="sub-tit">
+                <span>expand-table:</span>
+                <small>
+                    <a @click="$refs['demo-expand-table'].open()">usage</a>
+                </small>
+            </h3>
+            <demo-expand-table></demo-expand-table>
+            <demo-block ref="demo-expand-table" name="demo-expand-table"></demo-block>
         </div>
 
     </div>
