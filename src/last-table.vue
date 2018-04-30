@@ -166,6 +166,12 @@
                 this.$children[0].store = this.store.tStore(this.parentId, this.tLevel)
             })
         },
+        beforeDestroy() {
+            this.store.tStore = {
+                id: this.parentId,
+                level: this.tLevel,
+            }
+        }
     }
 </script>
 

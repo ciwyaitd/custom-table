@@ -304,22 +304,22 @@
                 this.$children[0].store = this.store.tStore(this._id, this.level)
             }
         },
-        updated() {
-            if (this.isChild) {
-                this.store.tStore = {
-                    id: this._id,
-                    level: this.level,
-                }
-                this.$nextTick(() => {
-                    this.store.tStore = {
-                        id: this._id,
-                        level: this.level,
-                        store: this.$children[0].store
-                    }
-                    this.$children[0].store = this.store.tStore(this._id, this.level)
-                })
-            }
-        },
+        // updated() {
+        //     if (this.isChild) {
+        //         this.store.tStore = {
+        //             id: this._id,
+        //             level: this.level,
+        //         }
+        //         this.$nextTick(() => {
+        //             this.store.tStore = {
+        //                 id: this._id,
+        //                 level: this.level,
+        //                 store: this.$children[0].store
+        //             }
+        //             this.$children[0].store = this.store.tStore(this._id, this.level)
+        //         })
+        //     }
+        // },
         beforeMount() {
             if (this.isChild) {
                 this._id = this.parentId
@@ -328,7 +328,13 @@
             this._id = 'expand-table-' + _id++
         },
         beforeDestroy() {
-            if (this.isChild) return
+            if (this.isChild) {
+                this.store.tStore = {
+                    id: this._id,
+                    level: this.level,
+                }
+                return
+            }
             this.store.delRowKeys(this._id)
         },
 

@@ -1,6 +1,6 @@
 {
   "name": "custom-table",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "a custom table component for vue.",
   "main": "dist/custom-table.js",
   "author": "ciwyaitd",

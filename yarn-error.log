@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/Cellar/node/9.10.1/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js package version
+  /usr/local/Cellar/node/9.10.1/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js dev
 
 PATH: 
-  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/aria2/bin:/usr/local/apache-tomcat-7.0.65/bin
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/aria2/bin:/usr/local/apache-tomcat-7.0.65/bin:/Users/ciwyaitd/.npm-global/bin
 
 Yarn version: 
   1.5.1
@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "custom-table",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "description": "a custom table component for vue.",
     "main": "dist/custom-table.js",
     "author": "ciwyaitd",
@@ -72,7 +72,6 @@ npm manifest:
       "webpack-merge": "^4.1.2"
     },
     "dependencies": {
-      "lodash": "^4.17.5"
     }
   }
 
@@ -6396,7 +6395,7 @@ Lockfile:
       yeoman-environment "^2.0.5"
 
 Trace: 
-  Error: Command "package" not found.
+  Error: Command "dev" not found.
       at new MessageError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:186:110)
       at /usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:87307:17
       at Generator.next (<anonymous>)
