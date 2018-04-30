@@ -22,6 +22,15 @@
             <demo-custom-table-with-slot></demo-custom-table-with-slot>
             <demo-block ref="demo-custom-table-with-slot" name="demo-custom-table-with-slot"></demo-block>
 
+             <h3 class="sub-tit">
+                <span>custom-table-with-slot-expand:</span>
+                <small>
+                    <a @click="$refs['demo-custom-table-with-slot-expand'].open()">usage</a>
+                </small>
+            </h3>
+            <demo-custom-table-with-slot-expand></demo-custom-table-with-slot-expand>
+            <demo-block ref="demo-custom-table-with-slot-expand" name="demo-custom-table-with-slot-expand"></demo-block>
+
             <h3 class="sub-tit">
                 <span>expand-table:</span>
                 <small>
@@ -38,6 +47,7 @@
 <script>
     import DemoCustomTable from './demo-custom-table.vue'
     import DemoCustomTableWithSlot from './demo-custom-table-with-slot.vue'
+    import DemoCustomTableWithSlotExpand from './demo-custom-table-with-slot-expand.vue'
     import DemoBlock from './demo-block.vue'
     import DemoExpandTable from './demo-expand-table.vue'
 
@@ -49,7 +59,8 @@
             DemoCustomTable,
             DemoCustomTableWithSlot,
             DemoBlock,
-            DemoExpandTable
+            DemoExpandTable,
+            DemoCustomTableWithSlotExpand,
         },
     }
 </script>

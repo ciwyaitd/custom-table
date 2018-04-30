@@ -1,6 +1,6 @@
 <template>
     <el-table
-        :data="data"
+        :data="tableData"
         :border="border"
         :stripe="stripe"
         :height="height"
@@ -8,14 +8,14 @@
         :show-header="showHeader"
         :hightlight-current-row="highlightCurrentRow"
         :row-class-name="rowClassName"
-        :row-style="rowStyle"
+        :row-style="getRowStyle"
         :row-key="rowKey"
         :show-summary="showSummary"
         :summary-method="summaryMethod"
         :span-method="spanMethod"
         :sum-text="sumText"
         :cell-class-name="cellClassName"
-        :cell-style="cellStyle"
+        :cell-style="getCellStyle"
         :header-row-class-name="headerRowClassName"
         :header-row-style="headerRowStyle"
         :header-cell-class-name="headerCellClassName"
@@ -24,7 +24,7 @@
         :empty-text="emptyText"
         :default-sort="defaultSort"
         :tooltip-effect="tooltipEffect"
-        v-on="$listeners"
+        v-on="listeners"
         >
 
         <table-column
@@ -75,6 +75,7 @@
     import { ElTable } from 'element-table'
     import TableColumn from 'element-table-column'
 
+    let _vue
     export default {
         name: 'custom-table-with-slot',
         components: {
@@ -132,10 +133,47 @@
             emptyText: String,
             defaultSort: Object,
             tooltipEffect: String,
+            expandKey: {
+                type: Array,
+                default: () => []
+            },
+            expandedAll: {
+                type: Boolean,
+                default: true
+            },
+            expandMode: {
+                type: String,
+                default: 'click'
+            }
         },
         data: () => {
             return {
-                reRendering: false
+                reRendering: false,
+                dataExpandAry: []
+            }
+        },
+        computed: {
+            listeners() {
+                return {
+                    ...this.$listeners,
+                    'row-click': (row, event, column) => {
+                        if (this.expandMode === 'click' && this.isExpandMode) this.toggleRow(this.tableData.indexOf(row), row)
+                        this.$emit('row-click', row, event, column)
+                    },
+                    'row-dblclick': (row, event) => {
+                        if (this.expandMode === 'dblclick' && this.isExpandMode) this.toggleRow(this.tableData.indexOf(row), row)
+                        this.$emit('row-dblclick', row, event)
+                    }
+                }
+            },
+            tableData() {
+                if (this.isExpandMode) {
+                    return this.flattenData(this.data, null, 0, this.expandedAll)
+                }
+                return this.data
+            },
+            isExpandMode() {
+                return this.data.some(v => Boolean(v.children))
             }
         },
 
@@ -148,10 +186,67 @@
                     })
                 },
                 deep: true
+            },
+        },
+
+        methods: {
+            flattenData(data, parent, level, expanded) {
+                let newData = []
+                expanded = expanded === true
+                data.forEach((row) => {
+                    let rowItem = {
+                        level,
+                        parent
+                    }
+                    _vue.set(row, 'expanded', expanded)
+                    newData.push(row)
+                    this.dataExpandAry.push(rowItem)
+                    if (row[this.propsKey.children]) {
+                        rowItem.isParent = true
+                        rowItem.expanded = expanded
+                        newData.push(...this.flattenData(row[this.propsKey.children], rowItem, 1 + level, expanded))
+                    }
+                })
+                return newData
+            },
+            getRowStyle({row, rowIndex}) {
+                if (!this.isExpandMode) return this.rowStyle
+                let rowStyle = this.rowStyle
+                let style = ''
+                if (typeof rowStyle === 'function') {
+                    style = rowStyle.call(null, {row, rowIndex})
+                }
+                let curRow = this.dataExpandAry[rowIndex]
+                let show
+                if (curRow.parent) {
+                    let index = this.dataExpandAry.indexOf(curRow.parent)
+                    show = this.tableData[index].expanded
+                } else {
+                    show = true
+                }
+                return `${show ? '' : 'display: none'};cursor: pointer;${style}`
+            },
+            getCellStyle({row, column, rowIndex, columnIndex}) {
+                if (this.cellStyle ||
+                    !this.dataExpandAry.length) return this.cellStyle
+                if (columnIndex === 0) {
+                    return {
+                        textIndent: 20 * this.dataExpandAry[rowIndex].level + 'px'
+                    }
+                }
+            },
+            toggleRow(index, row) {
+                let curRow = this.dataExpandAry[index]
+                if (index === -1 ||
+                    !curRow ||
+                    !curRow.isParent) return
+                curRow.expanded = !curRow.expanded
+                row.expanded = curRow.expanded
             }
         },
 
         install(Vue, options = {}) {
+            _vue = Vue
             Vue.component(options.name || this.name, this)
         }
     }
