@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "custom-table",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "description": "a custom table component for vue.",
     "main": "dist/custom-table.js",
     "author": "ciwyaitd",

@@ -52,6 +52,9 @@ Vue.component(CustomTableWithSlot.name, CustomTableWithSlot)
 | label | 指定表格数据 label 字段为 data 的某个属性值 | string | — | 'label' |
 | children | 指定表格数据 children 字段为 data 的某个属性值 | string | — | 'children' |
 
+如果需要使用 `custom-table-with-slot` 的 `expand mode`,则只需在 `data` 中加入 `children` 字段及相关需要显示的数据即可。
+
+
 ### Expand Table Attributes
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
@@ -142,6 +145,11 @@ props 中 children 字段无效，slot 需配合 showSlot 字段使用。
 | clearSort | 用于清空排序条件，数据会恢复成未排序的状态 | — |
 | clearFilter | 用于清空过滤条件，数据会恢复成未过滤的状态 | — |
 | doLayout | 对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法 | — |
+
+# Todos
+
+- [] `custom-table` 也支持 `expand mode`
+
 
 # License
 [MIT](https://opensource.org/licenses/MIT)

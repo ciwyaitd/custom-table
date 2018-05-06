@@ -246,6 +246,7 @@
         },
 
         install(Vue, options = {}) {
+            // 避免打包时，引入 Vue 依赖
             _vue = Vue
             Vue.component(options.name || this.name, this)
         }
